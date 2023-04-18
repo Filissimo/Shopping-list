@@ -14,7 +14,40 @@
     <header>
         <h1>Корзина</h1>
     </header>
-    <form action="">
+    <form id="addItem" action="">
+        <h2>Ведите данные продукта:</h2>
+        <ul>
+            <li><input type="text" id="title" placeholder="Название" autocomplete="on"></li>
+            <li>
+                <input type="number" step="0.01" id="price" placeholder="Цена" min="0" autocomplete="on">
+
+                <div class="radioAndLabel">
+                    <input type="radio" id="euro" name="currency">
+                    <label for="euro">евро</label>
+                </div>
+                <div class="radioAndLabel">
+                    <input type="radio" id="dollar" name="currency">
+                    <label for="dollar">доллары</label>
+                </div>
+                <div class="radioAndLabel">
+                    <input type="radio" id="rubl" name="currency">
+                    <label for="rubl">рубли</label>
+                </div>
+            </li>
+            <li><input type="number" id="amount" placeholder="Количество" min="0" autocomplete="on"></li>
+            <input type="button" id="submit" value="Добавить продукт в корзину">
+        </ul>
+    </form>
+    <div id="inputInfo">
+        <h3>Информация о данных, которые вы вводите:</h3>
+        <div id="debug_console"></div>
+    </div>
+    <div id="savedData">
+        <h3>Список продуктов:</h3>
+        <ul></ul>
+    </div>
+    
+    <form id="editItem" class="invisible" action="">
         <h2>Ведите данные продукта:</h2>
         <ul>
             <li><input type="text" id="title" placeholder="Название"></li>
@@ -34,18 +67,10 @@
                     <label for="rubl">рубли</label>
                 </div>
             </li>
-            <li><input type="number" id="amount" placeholder="Количество" min="0"></li>
-            <input type="button" id="submit" value="Добавить продукт в корзину">
+            <li><input type="number" id="amount" placeholder="Количество" min="0" autocomplete="on"></li>
+            <input type="button" id="submit" value="Сохранить изменения">
         </ul>
     </form>
-    <div id="inputInfo">
-        <h3>Информация о данных, которые вы вводите:</h3>
-        <div id="debug_console"></div>
-    </div>
-    <div id="savedData">
-        <h3>Список продуктов:</h3>
-        <ul></ul>
-    </div>
 </body>
 
 </html>

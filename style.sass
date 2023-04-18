@@ -1,25 +1,32 @@
-@media screen and (min-width: 531px)
+@media screen and (min-width: 571px)
     html
-        font-size: 13pt
-@media screen and (max-width: 530px)
+        --font-size: 13
+@media screen and (max-width: 570px)
     html
-        font-size: 12pt
-@media screen and (max-width: 480px)
+        --font-size: 12
+@media screen and (max-width: 520px)
     html
-        font-size: 11pt
+        --font-size: 11
+@media screen and (max-width: 470px)
+    html
+        --font-size: 10
 @media screen and (max-width: 440px)
     html
-        font-size: 10pt
-@media screen and (max-width: 410px)
+        --font-size: 9
+@media screen and (max-width: 400px)
     html
-        font-size: 9pt
+        --font-size: 8
 
 *
     margin: 0
     padding: 0
     text-align: center
+html
+    font-size: calc(var(--font-size) * 1pt)
 body
     display: flex
+    position: relative
+    left: -1.2rem
     flex-direction: column
     align-items: center
     header
@@ -45,6 +52,7 @@ form
             display: flex
             justify-content: center
             .radioAndLabel
+                display: none
                 margin: 0.2rem 0.3rem
                 padding: 0.4rem 0.7rem
                 border: 1px solid #a3db9d
@@ -53,7 +61,7 @@ form
             input
                 margin: 0.2rem
                 padding: 0.3rem
-                font-size: 1.2rem
+                font-size: 1.1rem
                 border-radius: 0.3rem
             #title
                 width: 25rem
@@ -68,10 +76,12 @@ form
         #submit:hover
             background-color: #84f278
             transition: all 1s
+#editItem
+    font-size: calc(calc(var(--font-size) - 2) * 1pt)
             
 #inputInfo
     margin: 0.4rem 0rem
-    padding: 0.1rem 0rem
+    padding: 0.3rem 1rem
     border: 2px solid #ff8000
     min-height: 3rem
     border-radius: 0.7rem
@@ -92,10 +102,14 @@ form
             border-radius: 1rem
             font-size: 1.2rem
             p
-                margin: 0.5rem
+                margin: 0.3rem
+                padding: 0.2rem 1rem
                 border: 1px solid #0f9200
             p::first-letter
                 text-transform: uppercase
             button
                 padding: 0.2rem 1rem
                 border-radius: 0.4rem
+
+.invisible
+    display: none
