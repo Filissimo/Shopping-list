@@ -5,7 +5,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let price = document.getElementById("price")
     let amount = document.getElementById("amount")
     let savedData = document.querySelector("#savedData ul")
-    let totalItemAmount = +localStorage.getItem('totalItemAmount')
+    let shopingList = JSON.parse(localStorage.getItem('shopingList'))
+    if (!shopingList) {
+        shopingList = {'totalItemAmount': 0, 'items': {}}
+        localStorage.setItem('shopingList', JSON.stringify(shopingList))
+    }
+    let totalItemAmount = shopingList.totalItemAmount
+
 
     let debug_console = document.getElementById("debug_console")
 
@@ -39,28 +45,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function addItemToLocalStorage(itemData) {
-        totalItemAmount = +localStorage.getItem('totalItemAmount')
-        if (!totalItemAmount || totalItemAmount == 0) {
-            localStorage.setItem('totalItemAmount', 0)
-            totalItemAmount = 0
-        }
-        localStorage.setItem(`title${totalItemAmount}`, itemData.title)
-        localStorage.setItem(`price${totalItemAmount}`, itemData.price)
-        localStorage.setItem(`amount${totalItemAmount}`, itemData.amount)
-
-        localStorage.setItem('totalItemAmount', totalItemAmount + 1)
+        shopingList.items[`item${totalItemAmount}`] = itemData
+        totalItemAmount++
+        shopingList.totalItemAmount = totalItemAmount
+        localStorage.setItem('shopingList', JSON.stringify(shopingList))
         window.location.reload()
     }
     function showItemList() {
-        totalItemAmount = localStorage.getItem('totalItemAmount')
         savedData.innerHTML = ''
         for (let i = 0; i < totalItemAmount; i++) {
             savedData.innerHTML += `
                 <li id="item${i}">
                     <p>
-                        ${localStorage.getItem(`title${i}`)}<br>
-                        цена: ${localStorage.getItem(`price${i}`)}<br>
-                        количество: ${localStorage.getItem(`amount${i}`)}<br>
+                        ${shopingList.items[`item${i}`].title}<br>
+                        цена: ${shopingList.items[`item${i}`].price}<br>
+                        количество: ${shopingList.items[`item${i}`].amount}<br>
                     </p>
                     <button id="edit${i}">Редактировать</button>
                     <button id="delete${i}">Удалить</button>
@@ -72,9 +71,9 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let i = 0; i < totalItemAmount; i++) {
         editButton = document.getElementById(`edit${i}`)
         editButton.onclick = () => {
-            thisTitle = localStorage.getItem(`title${i}`)
-            thisPrice = localStorage.getItem(`price${i}`)
-            thisAmount = localStorage.getItem(`amount${i}`)
+            thisTitle = shopingList.items[`item${i}`].title
+            thisPrice = shopingList.items[`item${i}`].price
+            thisAmount = shopingList.items[`item${i}`].amount
             editForm = document.getElementById("editItem")
             document.getElementById(`item${i}`).innerHTML = `
                 <form id="editItem" action="">
@@ -121,26 +120,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 let newTitle = document.getElementById("title_e").value
                 let newPrice = document.getElementById("price_e").value
                 let newAmount = document.getElementById("amount_e").value
-                localStorage.setItem(`title${i}`, newTitle)
-                localStorage.setItem(`price${i}`, newPrice)
-                localStorage.setItem(`amount${i}`, newAmount)
+                shopingList.items[`item${i}`].title = newTitle
+                shopingList.items[`item${i}`].price = newPrice
+                shopingList.items[`item${i}`].amount = newAmount
+                localStorage.setItem('shopingList', JSON.stringify(shopingList))
                 window.location.reload()
             }
         }
         deleteButton = document.getElementById(`delete${i}`)
         deleteButton.onclick = () => {
             for (let j = i; j < totalItemAmount - 1; j++) {
-                nextTitle = localStorage.getItem(`title${j + 1}`)
-                nextPrice = localStorage.getItem(`price${j + 1}`)
-                nextAmount = localStorage.getItem(`amount${j + 1}`)
-                localStorage.setItem(`title${j}`, nextTitle)
-                localStorage.setItem(`price${j}`, nextPrice)
-                localStorage.setItem(`amount${j}`, nextAmount)
+                let nextItem = shopingList.items[`item${j + 1}`]
+                console.log(nextItem)
+                if (nextItem) {
+                    shopingList.items[`item${j}`] = nextItem
+                }
             }
-            localStorage.removeItem(`title${totalItemAmount - 1}`)
-            localStorage.removeItem(`price${totalItemAmount - 1}`)
-            localStorage.removeItem(`amount${totalItemAmount - 1}`)
-            localStorage.setItem(`totalItemAmount`, totalItemAmount - 1)
+            delete shopingList.items[`item${totalItemAmount - 1}`]
+            shopingList.totalItemAmount = totalItemAmount - 1
+            localStorage.setItem('shopingList', JSON.stringify(shopingList))
             window.location.reload()
         }
     }
